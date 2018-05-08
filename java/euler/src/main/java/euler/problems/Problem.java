@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,23 +38,32 @@ public interface Problem {
 				
 				String expectedOutput = new String(Files.readAllBytes(outputPath), StandardCharsets.UTF_8).trim();
 				
-				String output = solve(input).trim();
+				String output = Optional.ofNullable(solve(input))
+				        .map(String::trim)
+				        .orElse("");
 				
 				StringBuilder sb = new StringBuilder();
 				
-				sb.append(className).append('.').append(testPath.getFileName()).append(": ");
+				sb.append(getClass().getName()).append('.').append(testPath.getFileName()).append(": ");
 				
 				if (expectedOutput.equalsIgnoreCase(output)) {
 					sb.append("PASSOU");
 				} else {
-					sb.append("FALHOU - Valor esperado: ")
+					sb.append("FALHOU")
+					    .append(System.lineSeparator())
+					    .append("Valor esperado: ")
+					    .append(System.lineSeparator())
 						.append(expectedOutput)
-						.append(", Recebeu: ")
+						.append(System.lineSeparator())
+						.append("Sua resposta: ")
+						.append(System.lineSeparator())
 						.append(output);
 				}
 				
 				System.out.println(sb);
 			}
 		}
+		
+		System.out.println();
 	}
 }

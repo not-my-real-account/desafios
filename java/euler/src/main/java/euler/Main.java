@@ -20,7 +20,7 @@ public class Main {
 	
 		List<Constructor<?>> constructors = reflections.getTypesAnnotatedWith(ProblemAnnotation.class)
 				.stream()
-				.sorted((a, b) -> a.getSimpleName().compareTo(b.getSimpleName()))
+				.sorted((a, b) -> a.getName().compareTo(b.getName()))
 				.map(Class::getConstructors)
 				.map(Arrays::asList)
 				.flatMap(List::stream)
@@ -32,5 +32,4 @@ public class Main {
 			problem.run();
 		}
 	}
-
 }
